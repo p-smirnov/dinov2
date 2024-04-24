@@ -1,9 +1,10 @@
 dino:
   head_n_prototypes: 1024
   head_bottleneck_dim: 256
-ibot:
-  separate_head: true
-  head_n_prototypes: 1024
+ibot: ## Look into interpreting the mask percentages for sampling these masks
+  loss_weight: 0
+  # separate_head: true
+  # head_n_prototypes: 1024
 train:
   dataset_path: CellCrops:split=TRAIN
   batch_size_per_gpu: 64
@@ -20,11 +21,17 @@ teacher:
 optim:
   epochs: 500
   weight_decay_end: 0.2
-  base_lr: 2.0e-04  # learning rate for a batch size of 1024
+  base_lr: 2.0e-04  # learning rate for a batch size of 1024, should modify!
   warmup_epochs: 80
   layerwise_decay: 1.0
-crops:
+crops: # we don't want to play around too much with the scale because size is informative in our data! (pixels have real meanings)
   local_crops_size: 32
+  local_crops_scale:
+  - 0.4
+  - 0.6
   global_crops_size: 64
+  global_crops_scale:
+  - 0.8
+  - 1.0
 evaluation:
   eval_period_iterations: 3125
